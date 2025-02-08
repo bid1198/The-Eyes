@@ -159,16 +159,22 @@
             }
 
             function triggerHackingScreen() {
-                document.getElementById("hacked-screen").style.display = "flex";
-                document.body.style.overflow = "hidden";
+    const hackedScreen = document.getElementById("hacked-screen");
+    const videoContainer = document.getElementById("video-container");
+    const accessImg = hackedScreen.querySelector('img'); 
 
-                setTimeout(() => {
-                    document.getElementById("video-container").style.display = "block";
-                    setTimeout(() => {
-                        document.getElementById("video-container").style.display = "none";
-                    }, 12900);
-                }, 4000);
-            }
+    hackedScreen.style.display = "flex";
+    document.body.style.overflow = "hidden";
+
+    setTimeout(() => {
+        accessImg.style.display = "none"; 
+        videoContainer.style.display = "block";
+        
+        setTimeout(() => {
+            videoContainer.style.display = "none";
+        }, 12900);
+    }, 4000);
+}
 
             function playClickSound() {
                 const clickSound = document.getElementById("click-sound");
