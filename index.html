@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Eyes</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, #000, #1a1a1a, #330033);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+            position: relative;
+        }
+
+        #c {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .r {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .d {
+            width: 13vw;
+            height: 13vw;
+            max-width: 90px;
+            max-height: 90px;
+            background-color: #222;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s ease-in-out;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+        }
+
+        .d:hover {
+            background-color: #ff0000;
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.7);
+        }
+
+        .d:hover .e {
+            background-color: #000;
+            outline-color: #ff0000;
+        }
+
+        .e {
+            background-color: black;
+            border: 2vw solid white;
+            outline: white solid 1vw;
+            outline-offset: -2vw;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+
+        #led-screen {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 50px;
+            background: rgba(255, 0, 0, 0.2);
+            border: 3px solid #ff0000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4vw;
+            color: #ff0000;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.8);
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            visibility: hidden;
+        }
+
+        #hacked-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: black;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        #hacked-screen img {
+            width: 80%;
+            max-width: 600px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="led-screen"></div>
+    <div id="c"></div>
+    <div id="hacked-screen">
+    <img src="https://64.media.tumblr.com/532c2d197f759438fbd9f23bc423081a/47476c5d760b797b-4a/s1280x1920/70bda01c4dd183565f8343db5154ecb3c79b14d9.gifv" alt="Accessing Data">
+    <div id="video-container" style="display: none; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;">
+        <iframe 
+            id="youtube-video" 
+            width="100%" 
+            height="100%" 
+            src="https://www.youtube.com/embed/BPPD-BvWnPI?autoplay=1&controls=0&modestbranding=1&rel=0&showinfo=0" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen>
+        </iframe>
+    </div>
+</div>
+<audio id="click-sound">
+    <source src="https://www.myinstants.com/media/sounds/error-notification.mp3" type="audio/mpeg">
+</audio>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let sz = window.innerWidth < 600 ? 14 : 25;
+            let i = 0;
+            let clickCount = 0; 
+
+            const txt = [
+                "We are watching.", 
+                "We know everything.", 
+                "No place to hide.",
+                "Your secrets are ours.",
+                "The system sees all.", 
+                "One step ahead.",
+                "Obey!"
+            ];
+
+            const str = [1, 3, 5, 3, 1];
+            const c = document.getElementById("c");
+            const ledScreen = document.getElementById("led-screen");
+            const hackedScreen = document.getElementById("hacked-screen");
+
+            function showTextOnLED(message, duration) {
+                ledScreen.innerHTML = message;
+                ledScreen.style.visibility = "visible";
+
+                setTimeout(() => {
+                    ledScreen.style.visibility = "hidden";
+                }, duration * 1000);
+            }
+
+            function triggerHackingScreen() {
+                hackedScreen.style.display = "flex";
+                document.body.style.overflow = "hidden";
+            }
+            
+            function showYouTubeVideo() {
+        const videoContainer = document.getElementById("video-container");
+        videoContainer.style.display = "block";
+
+        setTimeout(() => {
+            videoContainer.style.display = "none";
+        }, 12900); 
+    }
+
+    function triggerHackingScreen() {
+        const hackedScreen = document.getElementById("hacked-screen");
+        hackedScreen.style.display = "flex";
+        document.body.style.overflow = "hidden";
+
+        setTimeout(showYouTubeVideo, 4000); 
+    }
+
+            str.forEach(rowCount => {
+                const row = document.createElement("div");
+                row.classList.add("r");
+
+                for (let j = 0; j < rowCount; j++) {
+                    const eye = document.createElement("div");
+                    eye.classList.add("d");
+
+                    const pupil = document.createElement("div");
+                    pupil.classList.add("e");
+                    pupil.style.width = sz + "px";
+                    pupil.style.height = sz + "px";
+
+                    eye.appendChild(pupil);
+                    row.appendChild(eye);
+                    c.appendChild(row);
+
+                    eye.addEventListener("mouseover", () => {
+                        sz = Math.max(sz - (window.innerWidth < 600 ? 2 : 1), 0); 
+                        pupil.style.width = sz + "px";
+                        pupil.style.height = sz + "px";
+
+                        if (sz === 0) {
+                            Object.assign(eye.style, {
+                                backgroundColor: "black",
+                                border: "10px solid white",
+                                width: Math.floor(50 * Math.random()) + 30 + "px",
+                                height: Math.floor(50 * Math.random()) + 30 + "px"
+                            });
+
+                            pupil.style.outlineColor = "red";
+
+                            showTextOnLED("ACCESS REJECTED", 5);
+                        }
+                    });
+
+                    eye.addEventListener("click", () => {
+                        clickCount++;
+
+                        if (clickCount >= 25) {
+                            triggerHackingScreen();
+                        } else {
+                            const message = i < txt.length ? txt[i++] : "ACCESS REJECTED!";
+                            const duration = message === "ACCESS REJECTED!" ? 5 : 4;
+                            showTextOnLED(message, duration);
+                        }
+                    });
+                    
+                    function playClickSound() {
+        const clickSound = document.getElementById("click-sound");
+        clickSound.currentTime = 1; 
+        clickSound.play();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        let clickCount = 0;
+        const eyes = document.querySelectorAll(".d"); 
+
+        eyes.forEach(eye => {
+            eye.addEventListener("click", () => {
+                clickCount++;
+
+                if (clickCount <= 25) {
+                    playClickSound();
+                }
+
+                if (clickCount === 25) {
+                    triggerHackingScreen();
+                }
+            });
+        });
+    });
+
+                    document.addEventListener("mousemove", (event) => {
+                        const rect = eye.getBoundingClientRect();
+                        const eyeX = rect.left + rect.width / 2;
+                        const eyeY = rect.top + rect.height / 2;
+                        const deltaX = event.clientX - eyeX;
+                        const deltaY = event.clientY - eyeY;
+                        const angle = Math.atan2(deltaY, deltaX);
+                        pupil.style.transform = `translate(${Math.cos(angle) * 5}px, ${Math.sin(angle) * 5}px)`;
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+  </html>
